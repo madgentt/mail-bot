@@ -21,7 +21,7 @@ while i<18:
 
     fromaddr = "artemkartunchikov@mail.ru"
     toaddr = adres
-    mypass = "123123"
+    mypass = "1231213"
     print(ws.cell(row=i, column=1).value)
     print(ws.cell(row = i, column=3).value)
     msg = MIMEMultipart()

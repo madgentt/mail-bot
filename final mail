@@ -1,0 +1,44 @@
+import smtplib
+import openpyxl
+import time
+
+
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+from openpyxl import load_workbook
+from openpyxl.worksheet.worksheet import Worksheet
+
+wb = load_workbook(filename = 'flags.xlsx')
+ws: Worksheet = wb.active
+print(ws['a1'].value)
+val = ws['a1'].value
+
+i = 109
+while i<112:
+    strana = ws.cell(row = i, column=1).value
+    adres = ws.cell(row = i, column=3).value
+
+    fromaddr = "artemkartunchikov@mail.ru"
+    toaddr = adres
+    mypass = "crjde8;Cfv5&!Dj"
+    print(ws.cell(row=i, column=1).value)
+    print(ws.cell(row = i, column=3).value)
+    msg = MIMEMultipart()
+    msg['From'] = fromaddr
+    msg['To'] = toaddr
+    msg['Subject'] = "The flag of " + strana
+
+    body = "Dear representatives of " + strana + ", I collect flags, but I don't have the flag of " + strana +" - even thought I find it very cool. \
+           \nI would be happy if you could send me one, even just a small one would be great.\nMy address: Moscow region, Reutov, Lenina street, 2, 32. Index 143964\n\n\n\nI wish you all the best.\nArtem. "
+
+
+    msg.attach(MIMEText(body, 'plain'))
+
+    server = smtplib.SMTP_SSL('smtp.mail.ru', 465)
+    server.login(fromaddr, mypass)
+    text = msg.as_string()
+    server.sendmail(fromaddr, toaddr, text)
+    server.quit()
+    time.sleep(2)
+    i+=1
